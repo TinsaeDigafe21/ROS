@@ -1,12 +1,12 @@
 import React from 'react'
-import Navbar from './components/LandingPage/Navbar'
-import Hero from './components/LandingPage/Hero'
-import Story from './components/LandingPage/Story'
-import Features from './components/LandingPage/Features'
-import Dishes from './components/LandingPage/Dishes'
-import Stats from './components/LandingPage/Stats'
-import CTA from './components/LandingPage/CTA'
-import Footer from './components/LandingPage/Footer'
+import Navbar from './pages/LandingPage/Navbar'
+import Hero from './pages/LandingPage/Hero'
+import Story from './pages/LandingPage/Story'
+import Features from './pages/LandingPage/Features'
+import Dishes from './pages/LandingPage/Dishes'
+import Stats from './pages/LandingPage/Stats'
+import CTA from './pages/LandingPage/CTA'
+import Footer from './pages/LandingPage/Footer'
 
 function App() {
   return (
