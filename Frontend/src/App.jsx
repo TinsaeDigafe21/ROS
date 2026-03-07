@@ -10,6 +10,7 @@ import CTA from './pages/LandingPage/CTA'
 import Footer from './pages/LandingPage/Footer'
 
 import UserDashboard from './pages/Dashboard/UserDashboard'
+import KitchenDashboard from './pages/Dashboard/KitchenDashboard'
 
 function LandingPage() {
   return (
@@ -32,6 +33,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard/user" element={<UserDashboard />} />
+        <Route path="/dashboard/kitchen" element={<KitchenDashboard />} />
       </Routes>
     </Router>
   )
