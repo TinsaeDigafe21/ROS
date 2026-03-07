@@ -1,4 +1,5 @@
 import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './pages/LandingPage/Navbar'
 import Hero from './pages/LandingPage/Hero'
 import Story from './pages/LandingPage/Story'
@@ -8,7 +9,9 @@ import Stats from './pages/LandingPage/Stats'
 import CTA from './pages/LandingPage/CTA'
 import Footer from './pages/LandingPage/Footer'
 
-function App() {
+import UserDashboard from './pages/Dashboard/UserDashboard'
+
+function LandingPage() {
   return (
     <div className="font-sans text-gray-800 antialiased min-h-screen pb-0">
       <Navbar />
@@ -20,6 +23,17 @@ function App() {
       <CTA />
       <Footer />
     </div>
+  )
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/dashboard/user" element={<UserDashboard />} />
+      </Routes>
+    </Router>
   )
 }
 

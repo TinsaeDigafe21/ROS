@@ -1,14 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
     return (
         <nav className="container mx-auto px-4 py-4 flex items-center justify-between bg-white border-b border-gray-100">
-            <div className="flex items-center gap-2 cursor-pointer">
+            <Link to="/" className="flex items-center gap-2 cursor-pointer hover:opacity-90 transition-opacity">
                 <div className="bg-primary text-white p-2 rounded-md flex items-center justify-center">
                     <i className="fa-solid fa-utensils text-sm"></i>
                 </div>
                 <span className="font-bold text-xl tracking-tight">CulinaryExcellence</span>
-            </div>
+            </Link>
 
             <ul className="hidden md:flex items-center gap-8 text-gray-600 font-medium">
                 <li><a href="#" className="text-gray-900 transition-colors">Home</a></li>
@@ -26,9 +27,9 @@ const Navbar = () => {
                         className="bg-transparent border-none outline-none text-sm w-48"
                     />
                 </div>
-                <button className="bg-primary text-white px-6 py-2 rounded-full font-medium hover:bg-red-600 transition-colors">
-                    Sign In
-                </button>
+                <Link to="/dashboard/user" className="bg-primary text-white px-6 py-2 rounded-full font-medium hover:bg-red-600 transition-colors inline-block text-center whitespace-nowrap">
+                    Dashboard
+                </Link>
             </div>
         </nav>
     );
