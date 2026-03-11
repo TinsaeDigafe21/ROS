@@ -1,5 +1,8 @@
+// App.jsx
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+
+// Landing Page Components
 import Navbar from './pages/LandingPage/Navbar'
 import Hero from './pages/LandingPage/Hero'
 import Story from './pages/LandingPage/Story'
@@ -9,10 +12,15 @@ import Stats from './pages/LandingPage/Stats'
 import CTA from './pages/LandingPage/CTA'
 import Footer from './pages/LandingPage/Footer'
 
+// Auth
+import Login from './pages/Auth/Login'
+import Register from './pages/Auth/Register'
+
+// Dashboards
 import UserDashboard from './pages/Dashboard/UserDashboard'
 import KitchenDashboard from './pages/Dashboard/KitchenDashboard'
 
-// Admin Views
+// Admin Layout and Views
 import AdminLayout from './layouts/AdminLayout'
 import {
   AdminOverview,
@@ -23,18 +31,36 @@ import {
   AdminSettings
 } from './pages/Admin'
 
+// Context Providers
+import { CartProvider } from './context/CartContext'
+import { AuthProvider } from './context/AuthContext'
+
+// LandingPage Component (no Router here!)
 function LandingPage() {
   return (
-    <div className="font-sans text-gray-800 antialiased min-h-screen pb-0">
-      <Navbar />
-      <Hero />
-      <Story />
-      <Features />
-      <Dishes />
-      <Stats />
-      <CTA />
-      <Footer />
-    </div>
+    <CartProvider>
+      <AuthProvider>
+        <Navbar />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div className="font-sans text-gray-800 antialiased min-h-screen pb-0">
+                <Hero />
+                <Story />
+                <Features />
+                <Dishes />
+                <Stats />
+                <CTA />
+                <Footer />
+              </div>
+            }
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </AuthProvider>
+    </CartProvider>
   )
 }
 
@@ -42,7 +68,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        {/* Landing Page Routes */}
+        <Route path="/*" element={<LandingPage />} />
+
+        {/* Dashboard Routes */}
         <Route path="/dashboard/user" element={<UserDashboard />} />
         <Route path="/dashboard/kitchen" element={<KitchenDashboard />} />
 
