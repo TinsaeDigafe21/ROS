@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+# The above 'node_modules' rule will ignore and prevent ANY node_modules directory
+# from being tracked by git anywhere in the sub-directories (Frontend, Backend, etc.)
 dist
 dist-ssr
 *.local
