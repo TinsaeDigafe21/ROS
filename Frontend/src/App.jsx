@@ -11,6 +11,7 @@ import Footer from './pages/LandingPage/Footer'
 
 import UserDashboard from './pages/Dashboard/UserDashboard'
 import KitchenDashboard from './pages/Dashboard/KitchenDashboard'
+import Login from './pages/Auth/Login'
 
 // Admin Views
 import AdminLayout from './layouts/AdminLayout'
@@ -43,6 +44,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/dashboard/user" element={<UserDashboard />} />
         <Route path="/dashboard/kitchen" element={<KitchenDashboard />} />
 

@@ -90,7 +90,7 @@ const KitchenDashboard = () => {
         <div className="min-h-screen bg-[#F8FAFC] flex flex-col font-sans">
 
             {/* TOP HEADER */}
-            <header className="bg-white border-b border-gray-100 px-8 py-4 flex items-center justify-between sticky top-0 z-30">
+            <header className="bg-gray-900/90 backdrop-blur-md border-b border-gray-800 px-8 py-4 flex items-center justify-between sticky top-0 z-30">
 
                 {/* Left: Logo & Nav */}
                 <div className="flex items-center gap-12">
@@ -98,31 +98,24 @@ const KitchenDashboard = () => {
                         <div className="w-8 h-8 rounded-lg bg-[#E53935] flex items-center justify-center text-white shadow-sm">
                             <UtensilsCrossed className="w-5 h-5" />
                         </div>
-                        <span className="font-extrabold text-xl tracking-tight text-gray-900">Culinary<span className="text-gray-600">Excellence</span></span>
+                        <span className="font-extrabold text-xl tracking-tight text-white">Culinary<span className="text-gray-400">Excellence</span></span>
                     </div>
 
-                    <nav className="hidden lg:flex gap-8 text-sm font-bold text-gray-500">
-                        <a href="#" className="text-gray-900 border-b-2 border-gray-900 pb-1">Orders</a>
-                        <a href="#" className="hover:text-gray-900 transition-colors pb-1 border-b-2 border-transparent">Inventory</a>
-                        <a href="#" className="hover:text-gray-900 transition-colors pb-1 border-b-2 border-transparent">Staff</a>
-                        <a href="#" className="hover:text-gray-900 transition-colors pb-1 border-b-2 border-transparent">Settings</a>
+                    <nav className="hidden lg:flex gap-8 text-sm font-bold text-gray-400">
+                        <a href="#" className="text-white border-b-2 border-white pb-1">Orders</a>
+                        <a href="#" className="hover:text-white transition-colors pb-1 border-b-2 border-transparent">Settings</a>
                     </nav>
                 </div>
 
-                {/* Right: Search, Status, Profile */}
+                {/* Right: Search, Profile */}
                 <div className="flex items-center gap-6">
                     <div className="relative group hidden md:block w-72">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 group-focus-within:text-[#E53935]" />
                         <input
                             type="text"
                             placeholder="Search orders..."
-                            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-gray-100 text-sm border-none focus:ring-2 focus:ring-[#E53935]/20 focus:bg-white transition-all text-gray-700 outline-none placeholder-gray-400 font-medium"
+                            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-gray-800 text-sm border-none focus:ring-2 focus:ring-[#E53935]/50 focus:bg-gray-700 transition-all text-white outline-none placeholder-gray-500 font-medium"
                         />
-                    </div>
-
-                    <div className="bg-red-50 text-[#E53935] px-4 py-2.5 rounded-xl flex items-center gap-2 text-xs font-extrabold tracking-widest border border-red-100 shadow-sm cursor-pointer hover:bg-red-100 transition-colors">
-                        <span className="w-2 h-2 rounded-full bg-[#E53935] animate-pulse"></span>
-                        LIVE DASHBOARD
                     </div>
 
                     <div className="w-10 h-10 rounded-full border-2 border-gray-100 overflow-hidden cursor-pointer hover:border-gray-300 transition-colors">
