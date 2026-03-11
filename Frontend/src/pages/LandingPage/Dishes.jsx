@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Dishes = () => {
     const [activeTab, setActiveTab] = useState('All Selections');
@@ -39,9 +40,9 @@ const Dishes = () => {
                         Hand-picked favorites from our kitchen, prepared with the finest seasonal ingredients by our master chefs.
                     </p>
                 </div>
-                <a href="#" className="text-primary font-semibold hover:text-red-700 mt-4 md:mt-0 flex items-center gap-2">
+                <Link to="/menu" className="text-primary font-semibold hover:text-red-700 mt-4 md:mt-0 flex items-center gap-2">
                     View All <i className="fa-solid fa-arrow-right"></i>
-                </a>
+                </Link>
             </div>
 
             <div className="flex flex-wrap gap-4 mb-12 border-b border-gray-200 pb-4">
@@ -83,9 +84,9 @@ const Dishes = () => {
                                 {dish.description}
                             </p>
                             <div className="flex items-center gap-4">
-                                <button className="flex-1 bg-primary text-white py-3 rounded-xl font-semibold hover:bg-red-600 transition-colors">
+                                <Link to="/cart" className="flex-1 bg-primary text-white py-3 rounded-xl font-semibold hover:bg-red-600 transition-colors text-center">
                                     Add to Order
-                                </button>
+                                </Link>
                                 <button className="w-12 h-12 bg-red-50 text-primary rounded-xl flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
                                     <i className="fa-regular fa-heart"></i>
                                 </button>
