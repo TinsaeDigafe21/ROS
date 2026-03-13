@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import axios from 'axios';
+=======
+>>>>>>> 9574161521a8ea119966c574ab016bbf79bfd3e1
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import FoodCard from '../../components/FoodCard';
 import CartItem from '../../components/CartItem';
+<<<<<<< HEAD
 import { SlidersHorizontal, Phone, MapPin, ChevronRight, ShoppingCart } from 'lucide-react';
 
 const UserDashboard = () => {
@@ -31,6 +35,33 @@ const UserDashboard = () => {
         };
         fetchMenu();
     }, []);
+=======
+import { SlidersHorizontal, Phone, MapPin, ChevronRight, Loader2 } from 'lucide-react';
+import { getCategories } from '../../api/categoryApi';
+
+const UserDashboard = () => {
+    const [activeCategory, setActiveCategory] = useState('All');
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const fetchCategories = async () => {
+        try {
+            const cats = await getCategories();
+            setCategories(cats);
+            if (cats.length > 0) {
+                setActiveCategory(cats[0].name);
+            }
+        } catch (error) {
+            console.error('Failed to fetch categories:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+>>>>>>> 9574161521a8ea119966c574ab016bbf79bfd3e1
 
     const categories = [...new Set(foodItems.map(item => item.category))];
     const displayedItems = foodItems.filter(item => item.category === activeCategory);
@@ -135,18 +166,25 @@ const UserDashboard = () => {
 
                         {/* Category Tabs */}
                         <div className="flex gap-8 border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar">
-                            {categories.map((cat) => (
-                                <button
-                                    key={cat}
-                                    onClick={() => setActiveCategory(cat)}
-                                    className={`pb-4 text-sm font-bold whitespace-nowrap transition-all border-b-2 
-                    ${activeCategory === cat
-                                            ? 'border-[#E53935] text-[#E53935]'
-                                            : 'border-transparent text-gray-400 hover:text-gray-700 hover:border-gray-300'
-                                        }`}
-                                >
-                                    {cat}
-                                </button>
+                            {loading ? (
+                                <div className="flex justify-center items-center py-4">
+                                    <Loader2 className="w-5 h-5 animate-spin text-[#E53935]" />
+                                </div>
+                            ) : (
+                                categories.map((cat) => (
+                                    <button
+                                        key={cat._id}
+                                        onClick={() => setActiveCategory(cat.name)}
+                                        className={`pb-4 text-sm font-bold whitespace-nowrap transition-all border-b-2 
+                        ${activeCategory === cat.name
+                                                ? 'border-[#E53935] text-[#E53935]'
+                                                : 'border-transparent text-gray-400 hover:text-gray-700 hover:border-gray-300'
+                                            }`}
+                                    >
+                                        {cat.name}
+                                    </button>
+                                ))
+                            )}
                             ))}
                         </div>
 

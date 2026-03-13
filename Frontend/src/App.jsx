@@ -14,7 +14,11 @@ import Footer from './pages/LandingPage/Footer'
 
 // Auth
 import Login from './pages/Auth/Login'
+<<<<<<< HEAD
 //import Register from './pages/Auth/Register'
+=======
+// import Register from './pages/Auth/Register'
+>>>>>>> 9574161521a8ea119966c574ab016bbf79bfd3e1
 
 // Dashboards
 import UserDashboard from './pages/Dashboard/UserDashboard'
@@ -32,13 +36,21 @@ import {
 } from './pages/Admin'
 
 // Context Providers
+<<<<<<< HEAD
 /*import { CartProvider } from './context/CartContext'
 import { AuthProvider } from './context/AuthContext'*/
+=======
+import { AuthProvider } from './context/AuthContext'
+>>>>>>> 9574161521a8ea119966c574ab016bbf79bfd3e1
 
 // LandingPage Component (no Router here!)
 function LandingPage() {
   return (
+<<<<<<< HEAD
     <>
+=======
+    <AuthProvider>
+>>>>>>> 9574161521a8ea119966c574ab016bbf79bfd3e1
       <Navbar />
       <Routes>
         <Route
@@ -56,9 +68,14 @@ function LandingPage() {
           }
         />
         <Route path="/login" element={<Login />} />
+<<<<<<< HEAD
 
       </Routes>
     </>
+=======
+      </Routes>
+    </AuthProvider>
+>>>>>>> 9574161521a8ea119966c574ab016bbf79bfd3e1
   )
 }
 

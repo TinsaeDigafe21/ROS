@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
+=======
+import { useAuth } from '../../context/AuthContext';
+>>>>>>> 9574161521a8ea119966c574ab016bbf79bfd3e1
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+<<<<<<< HEAD
     const navigate = useNavigate();
 
     const handleLogin = (e) => {
@@ -12,6 +17,27 @@ const Login = () => {
         if (email.includes('admin')) {
             navigate('/admin');
         } else if (email.includes('kitchen')) {
+=======
+    const [formError, setFormError] = useState(null);
+    const navigate = useNavigate();
+    const { login, loading } = useAuth();
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setFormError(null);
+
+        const { success, user, message } = await login({ email, password });
+
+        if (!success) {
+            setFormError(message);
+            return;
+        }
+
+        // Route users based on role returned by the backend
+        if (user?.role === 'admin') {
+            navigate('/admin');
+        } else if (user?.role === 'kitchen') {
+>>>>>>> 9574161521a8ea119966c574ab016bbf79bfd3e1
             navigate('/dashboard/kitchen');
         } else {
             navigate('/dashboard/user');
@@ -38,6 +64,14 @@ const Login = () => {
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-gray-700">
                     <form className="space-y-6" onSubmit={handleLogin}>
+<<<<<<< HEAD
+=======
+                        {formError && (
+                            <div className="rounded-md bg-red-50 p-4 text-sm text-red-700">
+                                {formError}
+                            </div>
+                        )}
+>>>>>>> 9574161521a8ea119966c574ab016bbf79bfd3e1
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-300">
                                 Email address
@@ -56,8 +90,12 @@ const Login = () => {
                                 />
                             </div>
                         </div>
+<<<<<<< HEAD
 
                         <div>
+=======
+                          <div>
+>>>>>>> 9574161521a8ea119966c574ab016bbf79bfd3e1
                             <label htmlFor="password" className="block text-sm font-medium text-gray-300">
                                 Password
                             </label>
@@ -99,9 +137,16 @@ const Login = () => {
                         <div>
                             <button
                                 type="submit"
+<<<<<<< HEAD
                                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-primary transition-colors"
                             >
                                 Sign in
+=======
+                                disabled={loading}
+                                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-primary transition-colors ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            >
+                                {loading ? 'Signing in...' : 'Sign in'}
+>>>>>>> 9574161521a8ea119966c574ab016bbf79bfd3e1
                             </button>
                         </div>
                     </form>
@@ -133,4 +178,8 @@ const Login = () => {
     );
 };
 
+<<<<<<< HEAD
 export default Login;
+=======
+export default Login;
+>>>>>>> 9574161521a8ea119966c574ab016bbf79bfd3e1
