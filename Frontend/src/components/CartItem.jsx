@@ -1,7 +1,8 @@
 import React from 'react';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 
-const CartItem = ({ image, title, price, quantity = 1, onIncrement, onDecrement, onRemove }) => {
+const CartItem = ({ item, onIncrement, onDecrement, onRemove }) => {
+    const { image, title, price, quantity = 1 } = item;
     return (
         <div className="flex items-center gap-4 border-b border-gray-100 pb-4 mb-4 last:border-0 last:pb-0 last:mb-0">
             {/* Image */}
@@ -27,7 +28,7 @@ const CartItem = ({ image, title, price, quantity = 1, onIncrement, onDecrement,
                 {/* Quantity Controls */}
                 <div className="flex items-center gap-3">
                     <button
-                        onClick={onDecrement}
+                        onClick={() => onDecrement(item)}
                         className="w-6 h-6 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:text-[#E53935] hover:border-[#E53935] transition-colors"
                     >
                         <Minus className="w-3 h-3" />
@@ -39,14 +40,14 @@ const CartItem = ({ image, title, price, quantity = 1, onIncrement, onDecrement,
 
                     {quantity < 10 ? (
                         <button
-                            onClick={onIncrement}
+                            onClick={() => onIncrement(item)}
                             className="w-6 h-6 rounded-full bg-[#E53935] flex items-center justify-center text-white hover:bg-red-600 transition-colors shadow-sm"
                         >
                             <Plus className="w-3 h-3" />
                         </button>
                     ) : (
                         <button
-                            onClick={onRemove}
+                            onClick={() => onRemove(item)}
                             className="w-6 h-6 rounded-full bg-[#E53935] flex items-center justify-center text-white hover:bg-red-600 transition-colors shadow-sm"
                         >
                             <Trash2 className="w-3 h-3" />
