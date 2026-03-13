@@ -83,3 +83,85 @@ export const updateOrderStatus = async (req, res) => {
     return res.status(500).json({ message: "Internal server error." });
   }
 };
+
+// Get dashboard metrics (Admin only)
+export const getDashboardMetrics = async (req, res) => {
+  try {
+    const totalOrders = await Order.countDocuments();
+    const totalRevenueResult = await Order.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$totalPrice" },
+          avg: { $avg: "$totalPrice" }
+        }
+      }
+    ]);
+
+    const totalRevenue = totalRevenueResult[0]?.total || 0;
+    const averageOrderValue = totalRevenueResult[0]?.avg || 0;
+
+    // Count distinct active customers by name
+    const activeCustomers = await Order.distinct('customerName');
+    const totalCustomers = activeCustomers.length;
+
+    return res.status(200).json({
+      totalRevenue,
+      totalOrders,
+      totalCustomers,
+      averageOrderValue,
+    });
+  } catch (err) {
+    console.error("getDashboardMetrics error", err);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+// Get daily order counts for the last 7 days (Admin only)
+export const getDailyOrders = async (req, res) => {
+  try {
+    const days = parseInt(req.query.days, 10) || 7;
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - (days - 1));
+    startDate.setHours(0, 0, 0, 0);
+
+    const dailyData = await Order.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: startDate }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
+          },
+          count: { $sum: 1 },
+          revenue: { $sum: "$totalPrice" }
+        }
+      },
+      {
+        $sort: { _id: 1 }
+      }
+    ]);
+
+    // Fill missing days
+    const result = [];
+    for (let i = 0; i < days; i++) {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
+      const key = date.toISOString().split('T')[0];
+      const dayData = dailyData.find((d) => d._id === key);
+      result.push({
+        date: key,
+        count: dayData ? dayData.count : 0,
+        revenue: dayData ? dayData.revenue : 0,
+      });
+    }
+
+    return res.status(200).json(result);
+  } catch (err) {
+    console.error("getDailyOrders error", err);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
