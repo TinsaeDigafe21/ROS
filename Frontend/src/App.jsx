@@ -14,7 +14,7 @@ import Footer from './pages/LandingPage/Footer'
 
 // Auth
 import Login from './pages/Auth/Login'
-import Register from './pages/Auth/Register'
+// import Register from './pages/Auth/Register'
 
 // Dashboards
 import UserDashboard from './pages/Dashboard/UserDashboard'
@@ -32,35 +32,31 @@ import {
 } from './pages/Admin'
 
 // Context Providers
-import { CartProvider } from './context/CartContext'
 import { AuthProvider } from './context/AuthContext'
 
 // LandingPage Component (no Router here!)
 function LandingPage() {
   return (
-    <CartProvider>
-      <AuthProvider>
-        <Navbar />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <div className="font-sans text-gray-800 antialiased min-h-screen pb-0">
-                <Hero />
-                <Story />
-                <Features />
-                <Dishes />
-                <Stats />
-                <CTA />
-                <Footer />
-              </div>
-            }
-          />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </AuthProvider>
-    </CartProvider>
+    <AuthProvider>
+      <Navbar />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div className="font-sans text-gray-800 antialiased min-h-screen pb-0">
+              <Hero />
+              <Story />
+              <Features />
+              <Dishes />
+              <Stats />
+              <CTA />
+              <Footer />
+            </div>
+          }
+        />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </AuthProvider>
   )
 }
 

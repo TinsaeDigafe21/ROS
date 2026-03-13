@@ -27,11 +27,8 @@ const Navbar = () => {
                         className="bg-transparent border-none outline-none text-sm w-48"
                     />
                 </div>
-                <Link to="/admin/menu" className="bg-red-50 text-red-600 px-6 py-2 rounded-full font-medium hover:bg-red-100 transition-colors inline-block text-center whitespace-nowrap">
-                    Admin
-                </Link>
-                <Link to="/dashboard/kitchen" className="bg-orange-100 text-orange-600 px-6 py-2 rounded-full font-medium hover:bg-orange-200 transition-colors inline-block text-center whitespace-nowrap">
-                    Kitchen
+                <Link to="/login" className="bg-red-50 text-red-600 px-6 py-2 rounded-full font-medium hover:bg-red-100 transition-colors inline-block text-center whitespace-nowrap">
+                    Login
                 </Link>
                 <Link to="/dashboard/user" className="bg-primary text-white px-6 py-2 rounded-full font-medium hover:bg-red-600 transition-colors inline-block text-center whitespace-nowrap">
                     Dashboard
