@@ -1,4 +1,5 @@
 import MenuItem from "../models/MenuItem.js";
+import Order from "../models/Order.js";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -74,6 +75,38 @@ export const getMenuItems = async (req, res) => {
     return res.status(200).json(items);
   } catch (err) {
     console.error("getMenuItems error", err);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+// Get popular menu items based on order frequency (Public)
+export const getPopularMenuItems = async (req, res) => {
+  try {
+    // Aggregate orders to find most common items
+    const popularItemsAggregation = await Order.aggregate([
+      { $unwind: "$items" },
+      { $group: { _id: "$items.menuItem", totalOrdered: { $sum: "$items.quantity" } } },
+      { $sort: { totalOrdered: -1 } },
+      { $limit: 6 }
+    ]);
+    
+    // If no orders yet, fallback to random or latest items
+    let popularIds = popularItemsAggregation.map(item => item._id);
+    let items = [];
+    
+    if (popularIds.length > 0) {
+        items = await MenuItem.find({ _id: { $in: popularIds }, isActive: true });
+        // Sort items to match the aggregation order (highest first)
+        items.sort((a, b) => {
+            return popularIds.findIndex(id => id.equals(a._id)) - popularIds.findIndex(id => id.equals(b._id));
+        });
+    } else {
+        items = await MenuItem.find({ isActive: true }).limit(6).sort({ createdAt: -1 });
+    }
+    
+    return res.status(200).json(items);
+  } catch (err) {
+    console.error("getPopularMenuItems error", err);
     return res.status(500).json({ message: "Internal server error." });
   }
 };
