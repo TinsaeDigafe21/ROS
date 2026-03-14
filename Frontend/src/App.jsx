@@ -19,7 +19,6 @@ import Login from './pages/Auth/Login'
 // Dashboards
 import UserDashboard from './pages/Dashboard/UserDashboard'
 import KitchenDashboard from './pages/Dashboard/KitchenDashboard'
-import Login from './pages/Auth/Login'
 
 // Admin Layout and Views
 import AdminLayout from './layouts/AdminLayout'
