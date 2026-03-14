@@ -16,12 +16,7 @@ const Navbar = () => {
                 </span>
             </Link>
 
-            {/* Navigation Links */}
-            <div className="hidden md:flex flex-1 justify-center gap-8 font-semibold text-gray-900 text-sm">
-                <a href="#" className="hover:text-[#E53935] transition-colors">Menu</a>
-                <a href="#" className="hover:text-[#E53935] transition-colors">Orders</a>
-                <a href="#" className="hover:text-[#E53935] transition-colors">Profile</a>
-            </div>
+
 
             {/* Right section: Search, Cart, Profile */}
             <div className="flex items-center gap-6">
@@ -41,13 +36,6 @@ const Navbar = () => {
                     </span>
                 </div>
 
-                <div className="w-9 h-9 rounded-full bg-orange-100 overflow-hidden cursor-pointer shadow-sm hover:shadow active:scale-95 transition-all">
-                    <img
-                        src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix&backgroundColor=ffd5dc"
-                        alt="User avatar"
-                        className="w-full h-full object-cover"
-                    />
-                </div>
             </div>
         </nav>
     );
