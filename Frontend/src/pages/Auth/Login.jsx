@@ -2,9 +2,20 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
+
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate();
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        // Placeholder for authentication logic where email identifies role
+        if (email.includes('admin')) {
+            navigate('/admin');
+        } else if (email.includes('kitchen')) {
+
     const [formError, setFormError] = useState(null);
     const navigate = useNavigate();
     const { login, loading } = useAuth();
@@ -24,6 +35,7 @@ const Login = () => {
         if (user?.role === 'admin') {
             navigate('/admin');
         } else if (user?.role === 'kitchen') {
+
             navigate('/dashboard/kitchen');
         } else {
             navigate('/dashboard/user');
@@ -73,7 +85,14 @@ const Login = () => {
                                 />
                             </div>
                         </div>
+
                           <div>
+
+
+                        <div>
+
+                          <div>
+
                             <label htmlFor="password" className="block text-sm font-medium text-gray-300">
                                 Password
                             </label>
@@ -115,10 +134,14 @@ const Login = () => {
                         <div>
                             <button
                                 type="submit"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-primary transition-colors"
+                            >
+                                Sign in
                                 disabled={loading}
                                 className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-primary transition-colors ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
                                 {loading ? 'Signing in...' : 'Sign in'}
+
                             </button>
                         </div>
                     </form>
@@ -149,5 +172,6 @@ const Login = () => {
         </div>
     );
 };
+
 
 export default Login;
