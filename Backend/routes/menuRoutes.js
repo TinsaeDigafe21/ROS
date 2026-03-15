@@ -1,11 +1,14 @@
 import express from "express";
-import { createMenuItem, getMenuItems, updateMenuItem, deleteMenuItem } from "../controllers/menuController.js";
+import { createMenuItem, getMenuItems, getPopularMenuItems, updateMenuItem, deleteMenuItem } from "../controllers/menuController.js";
 import { authenticateToken, authorizeRoles } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 // Public route to get all menu items
 router.get("/", getMenuItems);
+
+// Public route to get top popular menu items
+router.get("/popular", getPopularMenuItems);
 
 // Admin only: create menu item
 router.post("/", authenticateToken, authorizeRoles("admin"), createMenuItem);
