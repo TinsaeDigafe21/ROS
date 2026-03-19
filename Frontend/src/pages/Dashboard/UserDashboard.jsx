@@ -1,50 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import FoodCard from '../../components/FoodCard';
 import CartItem from '../../components/CartItem';
-import { SlidersHorizontal, Phone, MapPin, ChevronRight } from 'lucide-react';
+import { SlidersHorizontal, Phone, MapPin, ChevronRight, Loader2 } from 'lucide-react';
+import { getCategories } from '../../api/categoryApi';
 
 const UserDashboard = () => {
-    const [activeCategory, setActiveCategory] = useState('Appetizers');
+    const [activeCategory, setActiveCategory] = useState('All');
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const categories = ['Appetizers', 'Main Courses', 'Desserts', 'Beverages'];
+    useEffect(() => {
+        fetchCategories();
+    }, []);
 
-    const foodItems = [
-        {
-            id: 1,
-            title: 'Heirloom Tomato Salad',
-            price: 16.00,
-            description: 'Burrata cheese, balsamic glaze, fresh basil, and extra virgin olive oil.',
-            image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=800&auto=format&fit=crop',
-        },
-        {
-            id: 2,
-            title: 'Chili Garlic Prawns',
-            price: 22.00,
-            description: 'Jumbo prawns sautéed in a spicy garlic butter sauce with sourdough.',
-            image: 'https://images.unsplash.com/photo-1559742811-822873691fc8?q=80&w=800&auto=format&fit=crop',
+    const fetchCategories = async () => {
+        try {
+            const cats = await getCategories();
+            setCategories(cats);
+            if (cats.length > 0) {
+                setActiveCategory(cats[0].name);
+            }
+        } catch (error) {
+            console.error('Failed to fetch categories:', error);
+        } finally {
+            setLoading(false);
         }
-    ];
+    };
 
-    const cartItems = [
-        {
-            id: 1,
-            title: 'Truffle Tagliatelle',
-            price: 28.00,
-            quantity: 1,
-            image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?q=80&w=800&auto=format&fit=crop',
-        },
-        {
-            id: 2,
-            title: 'Wild Salmon',
-            price: 34.00,
-            quantity: 1,
-            image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=800&auto=format&fit=crop',
+    const categories = [...new Set(foodItems.map(item => item.category))];
+    const displayedItems = foodItems.filter(item => item.category === activeCategory);
+
+    const handleAddToCart = (item) => {
+        setCartItems(prev => {
+            const existing = prev.find(i => i._id === item._id);
+            if (existing) {
+                return prev.map(i => i._id === item._id ? { ...i, quantity: i.quantity + 1 } : i);
+            }
+            return [...prev, { ...item, quantity: 1, title: item.name }];
+        });
+    };
+
+    const handleIncrement = (item) => {
+        setCartItems(prev => prev.map(i => i._id === item._id ? { ...i, quantity: i.quantity + 1 } : i));
+    };
+
+    const handleDecrement = (item) => {
+        setCartItems(prev => prev.map(i => i._id === item._id && i.quantity > 1 ? { ...i, quantity: i.quantity - 1 } : i));
+    };
+
+    const handleRemove = (item) => {
+        setCartItems(prev => prev.filter(i => i._id !== item._id));
+    };
+
+    const handlePlaceOrder = async () => {
+        if (cartItems.length === 0) return alert("Cart is empty");
+        setIsPlacingOrder(true);
+        try {
+            const orderPayload = {
+                customerName: "Guest User", // Can be dynamic if user logs in
+                tableNumber: 1, // Can be dynamic
+                items: cartItems.map(item => ({
+                    menuItem: item._id,
+                    quantity: item.quantity
+                })),
+                totalPrice: total
+            };
+
+            await axios.post('http://localhost:5000/api/orders', orderPayload);
+            alert("Order Placed Successfully!");
+            setCartItems([]);
+        } catch (error) {
+            console.error("Error placing order:", error);
+            alert("Failed to place order.");
+        } finally {
+            setIsPlacingOrder(false);
         }
-    ];
+    };
 
-    const subtotal = 62.00;
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const deliveryFee = 0; // FREE
     const total = subtotal + deliveryFee;
 
@@ -97,32 +132,39 @@ const UserDashboard = () => {
 
                         {/* Category Tabs */}
                         <div className="flex gap-8 border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar">
-                            {categories.map((cat) => (
-                                <button
-                                    key={cat}
-                                    onClick={() => setActiveCategory(cat)}
-                                    className={`pb-4 text-sm font-bold whitespace-nowrap transition-all border-b-2 
-                    ${activeCategory === cat
-                                            ? 'border-[#E53935] text-[#E53935]'
-                                            : 'border-transparent text-gray-400 hover:text-gray-700 hover:border-gray-300'
-                                        }`}
-                                >
-                                    {cat}
-                                </button>
+                            {loading ? (
+                                <div className="flex justify-center items-center py-4">
+                                    <Loader2 className="w-5 h-5 animate-spin text-[#E53935]" />
+                                </div>
+                            ) : (
+                                categories.map((cat) => (
+                                    <button
+                                        key={cat._id}
+                                        onClick={() => setActiveCategory(cat.name)}
+                                        className={`pb-4 text-sm font-bold whitespace-nowrap transition-all border-b-2 
+                        ${activeCategory === cat.name
+                                                ? 'border-[#E53935] text-[#E53935]'
+                                                : 'border-transparent text-gray-400 hover:text-gray-700 hover:border-gray-300'
+                                            }`}
+                                    >
+                                        {cat.name}
+                                    </button>
+                                ))
+                            )}
                             ))}
                         </div>
 
                         {/* FOOD GRID */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {foodItems.map(item => (
+                            {displayedItems.length > 0 ? displayedItems.map(item => (
                                 <FoodCard
-                                    key={item.id}
-                                    title={item.title}
-                                    price={item.price}
-                                    description={item.description}
-                                    image={item.image}
+                                    key={item._id}
+                                    item={item}
+                                    onAddToCart={handleAddToCart}
                                 />
-                            ))}
+                            )) : (
+                                <p className="text-gray-500">No items available in this category.</p>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -188,35 +230,22 @@ const UserDashboard = () => {
 
                         {/* Cart Items List */}
                         <div className="flex-1 overflow-y-auto pr-2 flex flex-col gap-4">
-                            {cartItems.map(item => (
-                                <div key={item.id} className="flex gap-4 mb-2">
-                                    <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
-                                        <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-                                    </div>
-                                    <div className="flex-1 flex flex-col justify-center">
-                                        <div className="flex justify-between items-start mb-2">
-                                            <h4 className="font-bold text-sm text-gray-900 w-32 leading-tight">{item.title}</h4>
-                                            <span className="font-extrabold text-sm text-gray-900">${item.price.toFixed(2)}</span>
-                                        </div>
-                                        {/* Quantity Controls match design logic */}
-                                        <div className="flex items-center gap-3">
-                                            <button className="w-5 h-5 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:border-gray-400">
-                                                <svg width="10" height="2" viewBox="0 0 10 2" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                            </button>
-                                            <span className="font-bold text-xs text-gray-900">{item.quantity}</span>
-                                            {item.id === 1 ? (
-                                                <button className="w-5 h-5 rounded-full bg-[#E53935] flex items-center justify-center text-white">
-                                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5H9M5 1V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                                </button>
-                                            ) : (
-                                                <button className="w-5 h-5 rounded-full bg-[#E53935] flex items-center justify-center text-white">
-                                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                                                </button>
-                                            )}
-                                        </div>
-                                    </div>
+                            {cartItems.length > 0 ? (
+                                cartItems.map(item => (
+                                    <CartItem 
+                                        key={item._id} 
+                                        item={item} 
+                                        onIncrement={handleIncrement}
+                                        onDecrement={handleDecrement}
+                                        onRemove={handleRemove}
+                                    />
+                                ))
+                            ) : (
+                                <div className="text-center text-gray-400 py-10 flex flex-col items-center justify-center">
+                                    <ShoppingCart className="w-12 h-12 mb-3 text-gray-200" />
+                                    <p>Your cart is empty.</p>
                                 </div>
-                            ))}
+                            )}
                         </div>
 
                         {/* Cart Summary */}
@@ -234,8 +263,12 @@ const UserDashboard = () => {
                                 <span className="text-[#E53935] font-extrabold text-xl">${total.toFixed(2)}</span>
                             </div>
 
-                            <button className="w-full bg-[#E53935] hover:bg-red-600 text-white font-bold py-4 rounded-xl transition-all shadow-md active:scale-[0.98] text-center">
-                                Place Order
+                            <button 
+                                onClick={handlePlaceOrder}
+                                disabled={cartItems.length === 0 || isPlacingOrder}
+                                className={`w-full ${cartItems.length === 0 ? 'bg-gray-300' : 'bg-[#E53935] hover:bg-red-600'} text-white font-bold py-4 rounded-xl transition-all shadow-md active:scale-[0.98] text-center`}
+                            >
+                                {isPlacingOrder ? 'Placing...' : 'Place Order'}
                             </button>
                         </div>
                     </div>

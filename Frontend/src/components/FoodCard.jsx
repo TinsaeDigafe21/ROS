@@ -1,7 +1,8 @@
 import React from 'react';
 import { ShoppingCart } from 'lucide-react';
 
-const FoodCard = ({ image, title, price, description }) => {
+const FoodCard = ({ item, onAddToCart }) => {
+    const { image, name: title, price, description } = item;
     return (
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow flex flex-col h-full">
             {/* Image */}
@@ -25,7 +26,10 @@ const FoodCard = ({ image, title, price, description }) => {
                 </p>
 
                 {/* Action Button */}
-                <button className="w-full bg-[#E53935] hover:bg-red-600 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors active:scale-[0.98]">
+                <button 
+                    onClick={() => onAddToCart(item)}
+                    className="w-full bg-[#E53935] hover:bg-red-600 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors active:scale-[0.98]"
+                >
                     <ShoppingCart className="w-4 h-4" />
                     <span>Add to Cart</span>
                 </button>
